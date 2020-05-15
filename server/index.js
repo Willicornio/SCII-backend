@@ -2,6 +2,7 @@ var express = require('express');
 const morgan = require('morgan');
 const User = require('./model/userModel');
 const md5 =require('md5');
+const cors = require('cors');
 let db = null;
 
 const { mongoose } = require('./database');
@@ -10,6 +11,7 @@ var app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors());
 
 app.listen(3000, function () {
     console.log("Servidor en marcha: ");
