@@ -4,6 +4,7 @@ const User = require('./model/userModel');
 const md5 =require('md5');
 const cors = require('cors');
 let db = null;
+const cors = require('cors');
 
 const { mongoose } = require('./database');
 
@@ -22,7 +23,10 @@ app.post('/login', async (req, res) => {
 
     console.log("Se va a loguear :");
 
-    User.findOne({name: req.body.name, pass: md5(req.body.pass)}).then((data) =>{
+    console.log("body.name :" + req.body.name);
+
+    User.findOne({"name": req.body.name, "pass": md5(req.body.pass)}).then((data) =>{
+        console.log("data : " + data);
         res.status(200).json({data})
     }).catch((error) => {
         res.status(500).json(error);
@@ -34,7 +38,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/setDefaultState', async (req, res) => {
 
-    const alcalde = new User({id: "alcalde", name:"alcade", pass: md5("alcalde")});
+    const alcalde = new User({id: "alcalde", name:"alcalde", pass: md5("alcalde")});
     console.log(alcalde);
     await addUser(alcalde);
 
@@ -74,4 +78,3 @@ app.get('/allUsers', async (req, res )=>{
 
     });
 });
-
