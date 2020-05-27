@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node server/index.js"
+    "run": "node server/index.js",
+    "certs": "node server/certs/createCerts.js"
   },
   "author": "",
   "license": "ISC",

@@ -87,6 +87,33 @@ async function saveConcejalesCert() {
         
     }
 
+    const { publicKey, privateKey } = await rsa.generateRandomKeys(3072);
+
+    var cert = {
+        publicKey: {
+            e: bigconv.bigintToHex(publicKey.e),
+            n: bigconv.bigintToHex(publicKey.n)
+        },
+        IssuerID: "Ayuntamiento de Río Seco",
+    }
+    
+    var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(digestHash(cert))));
+    
+    var certificate = {
+        certificate: {
+            cert, signatureIssuer
+        },
+        privateKey: {
+            d: bigconv.bigintToHex(privateKey.d),
+            n: bigconv.bigintToHex(privateKey.publicKey.n)
+        }
+    }
+
+    path = "./server/certs/AlcaldeCert.json"
+
+    fs.writeFileSync(path, JSON.stringify(certificate))
+
+
     
 
 
