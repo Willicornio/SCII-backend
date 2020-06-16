@@ -27,7 +27,7 @@ async function createKeys() {
 
 }
 
-function saveAytoCert() {
+async function saveAytoCert() {
 
     var cert = {
         publicKey: {
@@ -36,8 +36,10 @@ function saveAytoCert() {
         },
         IssuerID: "Ayuntamiento de Río Seco",
     }
+
     
-    var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(digestHash(cert))));
+    
+    var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(await digestHash(cert))));
     
     var certificate = {
         certificate: {
@@ -69,7 +71,7 @@ async function saveConcejalesCert() {
             IssuerID: "Ayuntamiento de Río Seco",
         }
         
-        var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(digestHash(cert))));
+        var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(await digestHash(cert))));
         
         var certificate = {
             certificate: {
@@ -97,7 +99,7 @@ async function saveConcejalesCert() {
         IssuerID: "Ayuntamiento de Río Seco",
     }
     
-    var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(digestHash(cert))));
+    var signatureIssuer = bigconv.bigintToHex(ayto_prKey.sign(bigconv.textToBigint(await digestHash(cert))));
     
     var certificate = {
         certificate: {

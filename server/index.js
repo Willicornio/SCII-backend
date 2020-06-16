@@ -6,6 +6,7 @@ const cors = require('cors');
 let db = null;
 const SocketIO = require('socket.io');
 const HashMap = require('hashmap');
+const fs = require('fs');
 
 
 const { mongoose } = require('./database');
@@ -81,6 +82,13 @@ app.get('/allUsers', async (req, res) => {
         res.status(500).json(error);
 
     });
+});
+
+app.get('/AytoCert', (req, res) => {
+
+    var cert = JSON.parse(fs.readFileSync('./server/certs/AytoCert.json'));
+    res.status(200).send(cert.certificate);
+
 });
 
 io.on('connection', (socket) => {
