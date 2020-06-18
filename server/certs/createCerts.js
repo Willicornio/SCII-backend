@@ -34,6 +34,7 @@ async function saveAytoCert() {
             e: bigconv.bigintToHex(ayto_pubKey.e),
             n: bigconv.bigintToHex(ayto_pubKey.n)
         },
+        ID: "Ayuntamiento de Río Seco",
         IssuerID: "Ayuntamiento de Río Seco",
     }
 
@@ -68,6 +69,7 @@ async function saveConcejalesCert() {
                 e: bigconv.bigintToHex(publicKey.e),
                 n: bigconv.bigintToHex(publicKey.n)
             },
+            ID: "Concejal " + index,
             IssuerID: "Ayuntamiento de Río Seco",
         }
         
@@ -96,6 +98,7 @@ async function saveConcejalesCert() {
             e: bigconv.bigintToHex(publicKey.e),
             n: bigconv.bigintToHex(publicKey.n)
         },
+        ID: "Alcalde",
         IssuerID: "Ayuntamiento de Río Seco",
     }
     

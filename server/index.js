@@ -7,9 +7,13 @@ let db = null;
 const SocketIO = require('socket.io');
 const HashMap = require('hashmap');
 const fs = require('fs');
+const rsa = require('rsa-scii-upc');
+const bigconv = require('bigint-conversion');
+const sha = require('object-sha');
 
 
 const { mongoose } = require('./database');
+const { RSA_NO_PADDING } = require('constants');
 
 var app = express();
 var usuarios = new HashMap();
@@ -124,15 +128,15 @@ io.on('connection', (socket) => {
 
         console.log("here")
         var conectados = []
-        
-        usuarios.forEach((k,v) => {
+
+        usuarios.forEach((k, v) => {
 
             conectados.push(v)
 
         })
 
         socket.emit('conectados', conectados);
-        socket.broadcast.emit('conectados',conectados)
+        socket.broadcast.emit('conectados', conectados)
 
 
     });
@@ -145,7 +149,7 @@ io.on('connection', (socket) => {
 
         socket.broadcast.to(usuarios.get("alcalde")).emit('concejal-to-alcalde-type5', mensaje)
 
-        
+
     });
 
     socket.on('alcalde-to-concejal-type6', (mensaje) => {
@@ -155,7 +159,31 @@ io.on('connection', (socket) => {
         //verificaciones correspondientes del proof si es correcto guardamos el mensaje para prueba de no repudio
 
 
-        
+
+    });
+
+    socket.on('AyuntamientoFirmaDecreto', async (mensaje) => {
+
+        console.log(mensaje)
+        var cert = JSON.parse(fs.readFileSync('./server/certs/AytoCert.json'));
+
+        publicKey = new rsa.PublicKey(bigconv.hexToBigint(cert.certificate.cert.publicKey.e), bigconv.hexToBigint(cert.certificate.cert.publicKey.n))
+        privateKey = new rsa.PrivateKey(bigconv.hexToBigint(cert.privateKey.d), publicKey)
+
+
+        const digest = await digestHash(mensaje);
+        const firmaAyto = bigconv.bigintToHex(privateKey.sign(bigconv.textToBigint(digest)));
+
+
+        const decretoFirmado = {
+            Decreto: mensaje,
+            Firma_Ayuntamiento: firmaAyto
+        }
+
+        console.log(decretoFirmado)
+
+        socket.emit('AyuntamientoFirmaDecreto', decretoFirmado)
+
     });
 
 
@@ -165,14 +193,19 @@ io.on('connection', (socket) => {
         usuarios.delete(userSocket);
 
         var conectados = []
-        
-        usuarios.forEach((k,v) => {
+
+        usuarios.forEach((k, v) => {
 
             conectados.push(v)
 
         })
 
-        socket.broadcast.emit('conectados',conectados)
+        socket.broadcast.emit('conectados', conectados)
 
     });
 });
+
+async function digestHash(body) {
+    const d = await sha.digest(body, 'SHA-256');
+    return d;
+}
