@@ -154,7 +154,6 @@ io.on('connection', (socket) => {
 
     socket.on('concejal-to-alcalde-type5Declined', (mensaje) => {
 
-        console.log(mensaje)
 
         //verificaciones correspondientes del proof
 
@@ -168,9 +167,9 @@ io.on('connection', (socket) => {
 
     socket.on('alcalde-to-concejal-type6', (mensaje) => {
 
-        console.log(mensaje)
 
-        //verificaciones correspondientes del proof si es correcto guardamos el mensaje para prueba de no repudio
+        socket.broadcast.to(usuarios.get(mensaje.body.src)).emit('concejal-to-alcalde-type6', mensaje)
+
 
 
 
