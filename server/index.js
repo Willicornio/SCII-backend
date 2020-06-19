@@ -152,6 +152,20 @@ io.on('connection', (socket) => {
 
     });
 
+    socket.on('concejal-to-alcalde-type5Declined', (mensaje) => {
+
+        console.log(mensaje)
+
+        //verificaciones correspondientes del proof
+
+        socket.broadcast.to(usuarios.get("alcalde")).emit('concejal-to-alcalde-type5Declined', mensaje)
+
+
+    });
+
+
+    
+
     socket.on('alcalde-to-concejal-type6', (mensaje) => {
 
         console.log(mensaje)
@@ -182,7 +196,9 @@ io.on('connection', (socket) => {
 
         console.log(decretoFirmado)
 
+        socket.broadcast.emit('AyuntamientoFirmaDecreto', decretoFirmado)
         socket.emit('AyuntamientoFirmaDecreto', decretoFirmado)
+
 
     });
 

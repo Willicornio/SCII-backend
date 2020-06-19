@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/index.js",
     "run": "node server/index.js",
     "certs": "node server/certs/createCerts.js"
   },
@@ -20,6 +21,7 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.11",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
     "object-sha": "^2.0.5",
     "rsa-scii-upc": "^1.0.1",
     "rxjs": "~6.5.4",
